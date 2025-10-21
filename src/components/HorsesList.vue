@@ -4,7 +4,7 @@
 
     <div
       v-if="gameStore.horses.length === 0"
-      class="text-center flex flex-col items-center justify-center min-h-[300px] sm:min-h-[400px] space-y-4 sm:space-y-6 py-6 sm:py-8 h-[calc(100vh-8rem)]"
+      class="text-center flex flex-col items-center justify-start sm:justify-center min-h-[300px] sm:min-h-[400px] space-y-4 sm:space-y-6 py-6 sm:py-8 h-[calc(100vh-8rem)]"
     >
       <!-- Welcome Section -->
       <div class="space-y-3 sm:space-y-4">
