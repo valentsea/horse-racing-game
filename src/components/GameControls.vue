@@ -5,9 +5,9 @@
         <!-- Control Buttons -->
         <div class="flex items-center space-x-3">
           <!-- Reset Game Button -->
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             :disabled="gameStore.gameState === 'racing'"
             @click="handleReset"
           >
