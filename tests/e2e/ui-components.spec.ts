@@ -7,8 +7,8 @@ test.describe('Horse Racing Game - UI Components', () => {
   })
 
   test('should display correct initial UI', async ({ page }) => {
-    // Check header
-    await expect(page.locator('h1')).toContainText('Horse Racing Game')
+    // Check header - now it's in the horses section
+    await expect(page.locator('h3')).toContainText('🐎 Horses')
 
     // Check empty state
     await expect(page.locator('h2')).toContainText('Ready to Race?')

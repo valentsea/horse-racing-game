@@ -37,6 +37,7 @@
         :loading="gameStore.gameState === 'generating'"
         @click="handleGenerateHorses"
         class="w-full sm:w-auto"
+        data-testid="generate-horses-button"
       >
         <span class="ml-2">
           {{ gameStore.gameState === 'generating' ? 'Generating...' : 'Generate horses' }}

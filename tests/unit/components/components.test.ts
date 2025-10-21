@@ -73,9 +73,14 @@ describe('HorsesList Component', () => {
       },
     })
 
-    // Find the "Generate horses" button specifically (not the "New Game" button)
-    const generateButton = wrapper.find('button:last-child')
-    if (generateButton.exists()) {
+    // Find all buttons and look for the one with "Generate horses" text
+    const allButtons = wrapper.findAll('button')
+    const generateButton = allButtons.find(
+      (button) =>
+        button.text().includes('Generate horses') || button.text().includes('Generating...'),
+    )
+
+    if (generateButton) {
       await generateButton.trigger('click')
       expect(mockStore.generateGameHorses).toHaveBeenCalledWith(20)
     }

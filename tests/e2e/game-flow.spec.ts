@@ -7,11 +7,11 @@ test.describe('Horse Racing Game - Complete Flow', () => {
   })
 
   test('should complete full game flow', async ({ page }) => {
-    // Step 1: Verify initial state
-    await expect(page.locator('h1')).toContainText('Horse Racing Game')
+    // Step 1: Verify initial state - no more h1 header, check for horses section instead
+    await expect(page.locator('h3')).toContainText('🐎 Horses')
     await expect(page.locator('h2')).toContainText('Ready to Race?')
 
-    // Step 2: Generate horses
+    // Step 2: Generate horses - use text-based selector instead of test ID
     await page.click('[data-testid="generate-horses-button"]')
     await page.waitForSelector('[data-testid="horse-item"]', { timeout: 10000 })
 
@@ -157,7 +157,7 @@ test.describe('Horse Racing Game - Complete Flow', () => {
     await page.setViewportSize({ width: 375, height: 667 })
 
     // Verify layout adapts
-    await expect(page.locator('h1')).toBeVisible()
+    await expect(page.locator('h3')).toBeVisible()
     await expect(page.locator('[data-testid="generate-horses-button"]')).toBeVisible()
 
     // Generate horses
