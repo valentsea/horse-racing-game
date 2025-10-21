@@ -3,7 +3,7 @@
     <!-- Race Delay Notification -->
     <div
       v-if="gameStore.isInRaceDelay"
-      class="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-blue-100 border border-blue-200 rounded-lg p-4 shadow-lg animate-slide-down"
+      class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-blue-100 border border-blue-200 rounded-lg p-4 shadow-lg animate-slide-down"
     >
       <div class="flex items-center space-x-3 text-blue-800">
         <div
