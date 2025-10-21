@@ -27,7 +27,7 @@ export const RACE_CONSTANTS = {
  * UI constants for consistent styling and behavior
  */
 export const UI_CONSTANTS = {
-  ANIMATION_DURATION: 300,
+  ANIMATION_DURATION: 150,
   DEBOUNCE_DELAY: 300,
   TOAST_DURATION: 3000,
   MODAL_Z_INDEX: 1000,

@@ -161,7 +161,7 @@
               <tr
                 v-for="(horse, index) in horseRankings"
                 :key="horse.id"
-                class="hover:bg-gray-50 transition-colors duration-200"
+                class="hover:bg-gray-50 transition-colors duration-100"
                 :class="{
                   'bg-yellow-50': index === 0,
                   'bg-gray-50': index === 1,
@@ -270,7 +270,7 @@
               <div class="flex items-center space-x-2">
                 <div class="w-32 bg-gray-200 rounded-full h-2">
                   <div
-                    class="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                    class="bg-blue-500 h-2 rounded-full transition-all duration-250"
                     :style="{ width: `${getSpeedPercentage(distance)}%` }"
                   ></div>
                 </div>
@@ -301,7 +301,7 @@
               <div class="flex items-center space-x-2">
                 <div class="w-24 bg-gray-200 rounded-full h-2">
                   <div
-                    class="bg-green-500 h-2 rounded-full transition-all duration-500"
+                    class="bg-green-500 h-2 rounded-full transition-all duration-250"
                     :style="{ width: `${(horse.stats.wins / maxWins) * 100}%` }"
                   ></div>
                 </div>
@@ -458,7 +458,7 @@ function getSpeedPercentage(distance: number): number {
 <style scoped>
 /* Animation for cards */
 .card-enter-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.15s ease-out;
 }
 
 .card-enter-from {
@@ -469,6 +469,6 @@ function getSpeedPercentage(distance: number): number {
 /* Progress bar animations */
 .bg-blue-500,
 .bg-green-500 {
-  transition: width 0.5s ease-in-out;
+  transition: width 0.25s ease-in-out;
 }
 </style>

@@ -1,6 +1,18 @@
 <template>
   <BaseCard variant="bordered">
-    <template #header><h3 class="text-base font-bold text-gray-600">Horses</h3></template>
+    <template #header>
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-gray-600 flex items-center">
+          <span class="mr-2">🐎</span>
+          Horses
+        </h3>
+        <Button variant="outline" size="sm" @click="handleReset" class="text-xs">
+          <span>+</span>
+          <span class="ml-1 hidden sm:inline">New Game</span>
+          <span class="ml-1 sm:hidden">New</span>
+        </Button>
+      </div>
+    </template>
 
     <div
       v-if="gameStore.horses.length === 0"
@@ -33,7 +45,7 @@
     </div>
 
     <!-- Horses List -->
-    <div v-else class="max-h-[calc(100vh-8rem)] overflow-y-auto animate-fade-in">
+    <div v-else class="max-h-[calc(100vh-8rem)] overflow-y-auto overflow-x-hidden animate-fade-in">
       <!-- Selected Horses Section -->
       <div v-if="selectedHorses.length > 0" class="animate-slide-in-left">
         <div
@@ -51,7 +63,7 @@
           :key="horse.id"
           :horse="horse"
           :is-selected="true"
-          :style="{ animationDelay: `${index * 30}ms` }"
+          :style="{ animationDelay: `${index * 15}ms` }"
           class="animate-slide-in-left"
         />
       </div>
@@ -70,7 +82,7 @@
           :key="horse.id"
           :horse="horse"
           :is-selected="false"
-          :style="{ animationDelay: `${(selectedHorses.length + index) * 30}ms` }"
+          :style="{ animationDelay: `${(selectedHorses.length + index) * 15}ms` }"
           class="animate-slide-in-right"
         />
       </div>
@@ -120,6 +132,14 @@ function handleGenerateHorses() {
     console.error('Error generating horses:', error)
   }
 }
+
+function handleReset() {
+  try {
+    gameStore.resetGame()
+  } catch (error) {
+    console.error('Error resetting game:', error)
+  }
+}
 </script>
 
 <style scoped>
@@ -155,16 +175,16 @@ function handleGenerateHorses() {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.1s ease-out;
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.2s ease-out forwards;
+  animation: slideInLeft 0.1s ease-out forwards;
   opacity: 0;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.2s ease-out forwards;
+  animation: slideInRight 0.1s ease-out forwards;
   opacity: 0;
 }
 </style>

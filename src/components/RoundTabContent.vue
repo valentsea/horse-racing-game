@@ -48,7 +48,7 @@
                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
                     :disabled="gameStore.isRaceInProgress"
                   >
-                    <span>🏃</span>
+                    <span>🔄</span>
                     <span>Run Round</span>
                   </button>
                   <button
@@ -72,7 +72,7 @@
     <div class="mb-6">
       <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
         <div
-          class="bg-gradient-to-r from-green-500 to-green-600 h-2.5 rounded-full transition-all duration-300 ease-out"
+          class="bg-gradient-to-r from-green-500 to-green-600 h-2.5 rounded-full transition-all duration-150 ease-out"
           :style="{ width: `${raceProgressPercentage}%` }"
         ></div>
       </div>
@@ -90,7 +90,7 @@
           v-for="(result, index) in originalOrderResults"
           :key="result.horseId"
           class="individual-track-container relative"
-          :style="{ animationDelay: `${index * 100}ms` }"
+          :style="{ animationDelay: `${index * 50}ms` }"
         >
           <!-- Absolutely Positioned Track Info -->
           <div
@@ -141,7 +141,7 @@
               <div class="horse-track-container flex items-center">
                 <!-- Horse Icon -->
                 <div
-                  class="w-6 h-6 rounded-full border border-white flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300"
+                  class="w-6 h-6 rounded-full border border-white flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-150"
                   :style="{ backgroundColor: result.horse.color.value }"
                 >
                   <span class="text-white text-xs font-bold drop-shadow-lg">🐎</span>
@@ -149,8 +149,9 @@
                 <!-- Position Badge -->
                 <div
                   v-if="race.state === 'completed'"
-                  class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md"
+                  class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md animate-badge-appear"
                   :class="getPositionColor(result.position)"
+                  :style="{ animationDelay: `${result.position * 100}ms` }"
                 >
                   {{ result.position }}
                 </div>
@@ -254,18 +255,23 @@
               <tr
                 v-for="(result, index) in sortedResults"
                 :key="result.horseId"
-                class="hover:bg-gray-50 transition-colors duration-200"
+                class="hover:bg-gray-50 transition-colors duration-100"
                 :class="{
                   'bg-yellow-50': result.position === 1,
                   'bg-gray-50': result.position === 2,
                   'bg-orange-50': result.position === 3,
                 }"
-                :style="{ animationDelay: `${index * 50}ms` }"
+                :style="{ animationDelay: `${index * 25}ms` }"
               >
                 <td class="border border-gray-200 px-3 py-2">
                   <div class="flex items-center space-x-2">
                     <span class="text-lg font-bold text-gray-700">{{ result.position }}</span>
-                    <Badge :position="result.position" size="sm" />
+                    <Badge
+                      :position="result.position"
+                      size="sm"
+                      class="animate-badge-appear"
+                      :style="{ animationDelay: `${result.position * 100}ms` }"
+                    />
                   </div>
                 </td>
                 <td class="border border-gray-200 px-3 py-2">
@@ -634,7 +640,7 @@ function getProgressStatusText(): string {
 
 /* Empty state animation */
 .empty-state {
-  animation: fadeIn 1s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -650,7 +656,7 @@ function getProgressStatusText(): string {
 
 /* Individual tracks animations */
 .individual-track-container {
-  animation: slideInFromLeft 0.6s ease-out forwards;
+  animation: slideInFromLeft 0.3s ease-out forwards;
   opacity: 0;
   transform: translateX(-20px);
 }
@@ -692,7 +698,7 @@ function getProgressStatusText(): string {
 .track-info {
   padding: 4px 8px;
   border-radius: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   color: white;
 }
 
@@ -707,7 +713,7 @@ function getProgressStatusText(): string {
 
 /* Results table animations */
 .results-table tbody tr {
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: fadeInUp 0.3s ease-out forwards;
   opacity: 0;
   transform: translateY(20px);
 }
@@ -739,5 +745,27 @@ function getProgressStatusText(): string {
 
 .results-table tbody tr.bg-orange-50 {
   border-left: 4px solid #ea580c;
+}
+
+/* Badge appearance animation */
+.animate-badge-appear {
+  animation: badgeAppear 0.4s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.5) rotate(-10deg);
+}
+
+@keyframes badgeAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 </style>

@@ -9,7 +9,7 @@
           :key="tab.id"
           @click="selectTab(tab.id)"
           :disabled="tab.disabled"
-          class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 whitespace-nowrap flex-shrink-0"
+          class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium transition-colors duration-100 border-b-2 whitespace-nowrap flex-shrink-0"
           :class="[
             tab.disabled
               ? 'text-gray-400 border-transparent cursor-not-allowed opacity-50'
@@ -41,7 +41,7 @@
           :disabled="!canStartGame || isRacing"
           class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed rounded-md transition-colors flex items-center space-x-1"
         >
-          <span v-if="isRacing" class="animate-pulse">🏃‍♂️</span>
+          <span v-if="isRacing" class="animate-pulse">🔄</span>
           <span v-else>🏁</span>
           <span class="hidden sm:inline">{{ isRacing ? 'Racing...' : 'Start the game' }}</span>
           <span class="sm:hidden">{{ isRacing ? 'Racing' : 'Start' }}</span>

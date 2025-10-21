@@ -1,13 +1,5 @@
 <template>
   <div class="horse-racing-game min-h-screen bg-gray-50">
-    <!-- Header -->
-    <div
-      class="px-2 sm:px-4 py-0 sm:py-0 flex justify-between items-center bg-gray-50 sticky top-0 sm:static z-10"
-    >
-      <h1 class="text-base sm:text-base font-bold text-gray-400">Horse Racing Game</h1>
-      <GameControls />
-    </div>
-
     <!-- Race Delay Notification -->
     <div
       v-if="gameStore.isInRaceDelay"
@@ -24,7 +16,7 @@
     </div>
 
     <!-- Game Layout -->
-    <div class="flex flex-col lg:grid lg:grid-cols-12 gap-2 pb-6 px-2 sm:px-4 overflow-x-none">
+    <div class="flex flex-col lg:grid lg:grid-cols-12 gap-2 pb-6 pt-4 px-2 sm:px-4 overflow-x-none">
       <!-- Left Column - Controls and Horses -->
       <div class="space-y-4 lg:col-span-2 order-2 lg:order-1">
         <!-- Horses List -->
@@ -119,7 +111,6 @@
 import { computed, ref, watch } from 'vue'
 import { useGameStore } from '../stores/gameStore'
 import type { Tab } from './ui/Tabs.vue' // Updated Tab interface with disabled property
-import GameControls from './GameControls.vue'
 import HorsesList from './HorsesList.vue'
 import RoundTabContent from './RoundTabContent.vue'
 import GameStatistics from './GameStatistics.vue'
@@ -156,7 +147,7 @@ function getRaceStateBadge(state: string): string | undefined {
     case 'pending':
       return '⏳'
     case 'racing':
-      return '🏃'
+      return '🔄'
     case 'completed':
       return '✓'
     default:
@@ -225,7 +216,8 @@ const canGenerateSchedule = computed(
   () =>
     gameStore.horses.length > 0 &&
     gameStore.gameState === 'idle' &&
-    !gameStore.races.some((race) => race.state === 'completed'),
+    !gameStore.races.some((race) => race.state === 'completed') &&
+    !gameStore.races.some((race) => race.state === 'racing'),
 )
 
 const canStartRaces = computed(() => gameStore.races.length > 0 && gameStore.gameState === 'idle')
@@ -273,6 +265,6 @@ function handleResetAllRounds() {
 }
 
 .animate-slide-down {
-  animation: slideDown 0.5s ease-out;
+  animation: slideDown 0.25s ease-out;
 }
 </style>
