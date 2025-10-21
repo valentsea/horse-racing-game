@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   // GitHub Pages configuration
-  base: process.env.NODE_ENV === 'production' ? '/insider-test/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/horse-racing-game/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
