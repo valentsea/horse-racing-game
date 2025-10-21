@@ -5,14 +5,8 @@
         <!-- Control Buttons -->
         <div class="flex items-center space-x-2 sm:space-x-3">
           <!-- Reset Game Button -->
-          <Button
-            variant="outline"
-            size="sm"
-            :disabled="gameStore.gameState === 'racing'"
-            @click="handleReset"
-            class="text-xs sm:text-sm"
-          >
-            <span>🗑️</span>
+          <Button variant="outline" size="sm" @click="handleReset" class="text-xs sm:text-sm">
+            <span>+</span>
             <span class="ml-1 hidden sm:inline">New Game</span>
             <span class="ml-1 sm:hidden">New</span>
           </Button>

@@ -165,8 +165,10 @@ watch(
   () => gameStore.races.every((race) => race.state === 'completed'),
   (allCompleted) => {
     if (allCompleted && gameStore.races.length > 0) {
-      // Switch to statistics tab when all races are completed
-      activeTab.value = -1
+      // Switch to statistics tab when all races are completed with 5-second delay
+      setTimeout(() => {
+        activeTab.value = -1
+      }, 5000)
     }
   },
 )
@@ -192,8 +194,23 @@ watch(
   { deep: true },
 )
 
+// Watch for races array changes to reset activeTab when game is reset
+watch(
+  () => gameStore.races,
+  (newRaces) => {
+    if (newRaces.length === 0) {
+      // Reset to first tab when no races exist (new game)
+      activeTab.value = 1
+    }
+  },
+  { immediate: true },
+)
+
 const canGenerateSchedule = computed(
-  () => gameStore.horses.length > 0 && gameStore.gameState === 'idle',
+  () =>
+    gameStore.horses.length > 0 &&
+    gameStore.gameState === 'idle' &&
+    !gameStore.races.some((race) => race.state === 'completed'),
 )
 
 const canStartRaces = computed(() => gameStore.races.length > 0 && gameStore.gameState === 'idle')

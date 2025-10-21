@@ -94,7 +94,7 @@
         >
           <!-- Absolutely Positioned Track Info -->
           <div
-            class="track-info absolute top-0 left-0 right-0 z-10 flex items-center justify-between py-1 px-2 bg-transparent"
+            class="track-info absolute -top-1 sm:top-0 left-0 right-0 z-10 flex items-center justify-between py-1 px-2 bg-transparent"
           >
             <div class="flex items-center space-x-2">
               <div
