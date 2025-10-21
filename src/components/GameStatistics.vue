@@ -1,73 +1,116 @@
 <template>
-  <div class="game-statistics p-6 max-h-[calc(100vh-10rem)] overflow-y-auto">
+  <div class="game-statistics p-3 sm:p-6 max-h-[calc(100vh-10rem)] overflow-y-auto">
     <!-- Statistics Header -->
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+    <div class="mb-4 sm:mb-6">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2 flex items-center">
         <span class="mr-2">📊</span>
         Game Statistics
       </h2>
-      <p class="text-gray-600">Comprehensive overview of all races and horse performance</p>
+      <p class="text-sm sm:text-base text-gray-600">
+        Comprehensive overview of all races and horse performance
+      </p>
     </div>
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <BaseCard class="p-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-8">
+      <BaseCard class="p-2 sm:p-4">
         <div class="flex items-center">
-          <div class="p-2 bg-blue-100 rounded-lg">
-            <span class="text-2xl">🏁</span>
+          <div class="p-1 sm:p-2 bg-blue-100 rounded-lg">
+            <span class="text-lg sm:text-2xl">🏁</span>
           </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-gray-600">Total Races</p>
-            <p class="text-2xl font-bold text-gray-900">{{ completedRaces.length }}</p>
+          <div class="ml-2 sm:ml-3">
+            <p class="text-xs sm:text-sm font-medium text-gray-600">Total Races</p>
+            <p class="text-lg sm:text-2xl font-bold text-gray-900">{{ completedRaces.length }}</p>
           </div>
         </div>
       </BaseCard>
 
-      <BaseCard class="p-4">
+      <BaseCard class="p-2 sm:p-4">
         <div class="flex items-center">
-          <div class="p-2 bg-green-100 rounded-lg">
-            <span class="text-2xl">🐎</span>
+          <div class="p-1 sm:p-2 bg-green-100 rounded-lg">
+            <span class="text-lg sm:text-2xl">🐎</span>
           </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-gray-600">Total Horses</p>
-            <p class="text-2xl font-bold text-gray-900">{{ totalHorses }}</p>
+          <div class="ml-2 sm:ml-3">
+            <p class="text-xs sm:text-sm font-medium text-gray-600">Total Horses</p>
+            <p class="text-lg sm:text-2xl font-bold text-gray-900">{{ totalHorses }}</p>
           </div>
         </div>
       </BaseCard>
 
-      <BaseCard class="p-4">
+      <BaseCard class="p-2 sm:p-4">
         <div class="flex items-center">
-          <div class="p-2 bg-yellow-100 rounded-lg">
-            <span class="text-2xl">⚡</span>
+          <div class="p-1 sm:p-2 bg-yellow-100 rounded-lg">
+            <span class="text-lg sm:text-2xl">⚡</span>
           </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-gray-600">Fastest Time</p>
-            <p class="text-2xl font-bold text-gray-900">{{ fastestTime }}s</p>
+          <div class="ml-2 sm:ml-3">
+            <p class="text-xs sm:text-sm font-medium text-gray-600">Fastest Time</p>
+            <p class="text-lg sm:text-2xl font-bold text-gray-900">{{ fastestTime }}s</p>
           </div>
         </div>
       </BaseCard>
 
-      <BaseCard class="p-4">
+      <BaseCard class="p-2 sm:p-4">
         <div class="flex items-center">
-          <div class="p-2 bg-purple-100 rounded-lg">
-            <span class="text-2xl">📏</span>
+          <div class="p-1 sm:p-2 bg-purple-100 rounded-lg">
+            <span class="text-lg sm:text-2xl">📏</span>
           </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-gray-600">Total Distance</p>
-            <p class="text-2xl font-bold text-gray-900">{{ totalDistance }}m</p>
+          <div class="ml-2 sm:ml-3">
+            <p class="text-xs sm:text-sm font-medium text-gray-600">Total Distance</p>
+            <p class="text-lg sm:text-2xl font-bold text-gray-900">{{ totalDistance }}m</p>
           </div>
         </div>
       </BaseCard>
     </div>
 
     <!-- Horse Performance Rankings -->
-    <div class="mb-8">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+    <div class="mb-6 sm:mb-8">
+      <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center">
         <span class="mr-2">🏆</span>
         Horse Performance Rankings
       </h3>
 
-      <BaseCard class="overflow-hidden">
+      <!-- Mobile Card View -->
+      <div class="block sm:hidden space-y-3">
+        <div
+          v-for="(horse, index) in horseRankings"
+          :key="horse.id"
+          class="bg-white border border-gray-200 rounded-lg p-3 shadow-sm"
+          :class="{
+            'bg-yellow-50 border-yellow-200': index === 0,
+            'bg-gray-50 border-gray-300': index === 1,
+            'bg-orange-50 border-orange-200': index === 2,
+          }"
+        >
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-2">
+              <span class="text-lg font-bold text-gray-700">{{ index + 1 }}</span>
+              <Badge :position="index + 1" size="sm" />
+            </div>
+            <div class="text-right">
+              <div class="text-sm font-semibold">{{ horse.stats.wins }} wins</div>
+              <div class="text-xs text-gray-500">{{ horse.stats.races }} races</div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 mb-2">
+            <div
+              class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center"
+              :style="{ backgroundColor: horse.color.value }"
+            >
+              <span class="text-white text-xs font-bold">🐎</span>
+            </div>
+            <span class="font-medium text-sm">{{ horse.name }}</span>
+            <span class="text-xs text-gray-500">({{ horse.color.name }})</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs text-gray-600">
+            <div>Avg Position: {{ horse.stats.averagePosition.toFixed(1) }}</div>
+            <div>Best Time: {{ horse.stats.bestTime.toFixed(2) }}s</div>
+            <div>Avg Speed: {{ horse.stats.averageSpeed.toFixed(2) }} m/s</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Table View -->
+      <BaseCard class="hidden sm:block overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead class="bg-gray-50">

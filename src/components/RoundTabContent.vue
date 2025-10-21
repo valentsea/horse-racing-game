@@ -1,21 +1,23 @@
 <template>
-  <div class="round-tab-content p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
+  <div class="round-tab-content p-3 sm:p-6 max-h-[calc(100vh-8rem)] overflow-y-auto">
     <!-- Round Header -->
-    <div class="mb-6">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center space-x-3">
-          <h2 class="text-2xl font-bold text-gray-800">Round {{ race.round }}</h2>
+    <div class="mb-4 sm:mb-6">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0"
+      >
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800">Round {{ race.round }}</h2>
           <div class="flex items-center space-x-2">
             <div
               :class="getStateBadgeClasses(race.state)"
-              class="px-3 py-1 rounded-full text-sm font-medium"
+              class="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium"
             >
               {{ getStateIcon(race.state) }} {{ getStateText(race.state) }}
             </div>
           </div>
         </div>
-        <div class="flex items-center space-x-3">
-          <div class="text-sm text-gray-600">Distance: {{ race.distance }}m</div>
+        <div class="flex items-center justify-between sm:space-x-3">
+          <div class="text-xs sm:text-sm text-gray-600">Distance: {{ race.distance }}m</div>
           <div class="flex items-center space-x-2">
             <!-- Three-dot menu for round actions -->
             <div
@@ -159,13 +161,53 @@
       </div>
 
       <!-- Results Table -->
-      <div v-if="race.state === 'completed'" class="results-table mt-6">
-        <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+      <div v-if="race.state === 'completed'" class="results-table mt-4 sm:mt-6">
+        <h4 class="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center">
           <span class="mr-2">📊</span>
           Race Results
         </h4>
 
-        <div class="overflow-x-auto">
+        <!-- Mobile Card View -->
+        <div class="block sm:hidden space-y-3">
+          <div
+            v-for="result in sortedResults"
+            :key="result.horseId"
+            class="bg-white border border-gray-200 rounded-lg p-3 shadow-sm"
+            :class="{
+              'bg-yellow-50 border-yellow-200': result.position === 1,
+              'bg-gray-50 border-gray-300': result.position === 2,
+              'bg-orange-50 border-orange-200': result.position === 3,
+            }"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center space-x-2">
+                <span class="text-lg font-bold text-gray-700">{{ result.position }}</span>
+                <Badge :position="result.position" size="sm" />
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-semibold">{{ result.time }}s</div>
+                <div class="text-xs text-gray-500">{{ result.speed }} m/s</div>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2 mb-2">
+              <div
+                class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center"
+                :style="{ backgroundColor: result.horse.color.value }"
+              >
+                <span class="text-white text-xs font-bold">🐎</span>
+              </div>
+              <span class="font-medium text-sm">{{ result.horse.name }}</span>
+              <span class="text-xs text-gray-500">({{ result.horse.color.name }})</span>
+            </div>
+            <div class="flex justify-between text-xs text-gray-600">
+              <span>Gap: {{ result.gap === 0 ? '-' : `+${result.gap}s` }}</span>
+              <span>Distance: {{ result.distance }}m</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden sm:block overflow-x-auto">
           <table
             class="w-full border-collapse border border-gray-200 rounded-lg bg-white shadow-sm"
           >

@@ -6,23 +6,23 @@
       'hover:bg-gray-50': !isSelected,
     }"
   >
-    <div class="flex items-center space-x-3 px-2 py-2">
+    <div class="flex items-center space-x-2 sm:space-x-3 px-2 py-2 sm:py-3">
       <!-- Horse Color Indicator -->
       <div
-        class="w-10 h-10 rounded-full border flex items-center justify-center text-white transition-all duration-200"
+        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-white transition-all duration-200 flex-shrink-0"
         :class="{
           'border-blue-400 shadow-md': isSelected,
           'border-gray-300': !isSelected,
         }"
         :style="{ backgroundColor: horse.color.value }"
       >
-        🐎
+        <span class="text-sm sm:text-base">🐎</span>
       </div>
 
       <!-- Horse Info -->
-      <div class="flex-1">
+      <div class="flex-1 min-w-0">
         <h3
-          class="font-semibold transition-colors duration-200"
+          class="font-semibold text-sm sm:text-base transition-colors duration-200 truncate"
           :class="{
             'text-blue-800': isSelected,
             'text-gray-800': !isSelected,
@@ -31,7 +31,7 @@
           {{ horse.name }}
         </h3>
         <p
-          class="text-sm transition-colors duration-200"
+          class="text-xs sm:text-sm transition-colors duration-200 truncate"
           :class="{
             'text-blue-600': isSelected,
             'text-gray-600': !isSelected,
@@ -42,8 +42,8 @@
       </div>
 
       <!-- Condition Score -->
-      <div class="text-right">
-        <Badge :variant="getConditionVariant(horse.condition)" size="md">
+      <div class="text-right flex-shrink-0">
+        <Badge :variant="getConditionVariant(horse.condition)" size="sm">
           {{ horse.condition }}
         </Badge>
       </div>

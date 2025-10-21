@@ -4,16 +4,18 @@
 
     <div
       v-if="gameStore.horses.length === 0"
-      class="text-center flex flex-col items-center justify-center min-h-[400px] space-y-6 py-8 h-[calc(100vh-8rem)]"
+      class="text-center flex flex-col items-center justify-center min-h-[300px] sm:min-h-[400px] space-y-4 sm:space-y-6 py-6 sm:py-8 h-[calc(100vh-8rem)]"
     >
       <!-- Welcome Section -->
-      <div class="space-y-4">
+      <div class="space-y-3 sm:space-y-4">
         <!-- Large Horse Icon -->
-        <div class="text-6xl mb-4">🐎</div>
+        <div class="text-4xl sm:text-6xl mb-3 sm:mb-4">🐎</div>
 
         <!-- Welcome Text -->
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Ready to Race?</h2>
-        <p class="text-gray-600 max-w-md mx-auto">Generate horses and start racing!</p>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Ready to Race?</h2>
+        <p class="text-sm sm:text-base text-gray-600 max-w-md mx-auto px-4">
+          Generate horses and start racing!
+        </p>
       </div>
 
       <!-- Generate Button -->
@@ -22,6 +24,7 @@
         size="lg"
         :loading="gameStore.gameState === 'generating'"
         @click="handleGenerateHorses"
+        class="w-full sm:w-auto"
       >
         <span class="ml-2">
           {{ gameStore.gameState === 'generating' ? 'Generating...' : 'Generate horses' }}

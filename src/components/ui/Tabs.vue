@@ -2,13 +2,14 @@
   <div class="tabs-container">
     <!-- Tab Headers -->
     <div class="flex border border-gray-200 bg-white rounded-t-lg">
-      <div class="flex flex-1">
+      <!-- Scrollable tabs container -->
+      <div class="flex flex-1 min-w-0 overflow-x-auto">
         <button
           v-for="tab in tabs"
           :key="tab.id"
           @click="selectTab(tab.id)"
           :disabled="tab.disabled"
-          class="px-4 py-3 text-sm font-medium transition-colors duration-200 border-b-2"
+          class="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium transition-colors duration-200 border-b-2 whitespace-nowrap flex-shrink-0"
           :class="[
             tab.disabled
               ? 'text-gray-400 border-transparent cursor-not-allowed opacity-50'
@@ -17,27 +18,33 @@
                 : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300',
           ]"
         >
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-1 sm:space-x-2">
             <span>{{ tab.label }}</span>
-            <span v-if="tab.badge" class="ml-2 px-2 py-1 text-xs rounded-full border text-gray-600">
+            <span
+              v-if="tab.badge"
+              class="ml-1 sm:ml-2 px-1 sm:px-2 py-0.5 sm:py-1 text-xs rounded-full border text-gray-600"
+            >
               {{ tab.badge }}
             </span>
           </div>
         </button>
       </div>
 
-      <!-- Right side controls -->
-      <div class="flex items-center space-x-2 px-4 border-l border-gray-200">
+      <!-- Right side controls - always visible -->
+      <div
+        class="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 border-l border-gray-200 flex-shrink-0 bg-white"
+      >
         <!-- Start the game button -->
         <button
           v-if="showStartButton"
           @click="$emit('start-game')"
           :disabled="!canStartGame || isRacing"
-          class="px-3 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed rounded-md transition-colors flex items-center space-x-1"
+          class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed rounded-md transition-colors flex items-center space-x-1"
         >
           <span v-if="isRacing" class="animate-pulse">🏃‍♂️</span>
           <span v-else>🏁</span>
-          <span>{{ isRacing ? 'Racing...' : 'Start the game' }}</span>
+          <span class="hidden sm:inline">{{ isRacing ? 'Racing...' : 'Start the game' }}</span>
+          <span class="sm:hidden">{{ isRacing ? 'Racing' : 'Start' }}</span>
         </button>
 
         <!-- Reset All Rounds menu -->

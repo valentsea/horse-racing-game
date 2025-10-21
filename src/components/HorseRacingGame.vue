@@ -1,91 +1,100 @@
 <template>
-  <div class="horse-racing-game h-screen bg-gray-50 overflow-hidden">
-    <div class="h-12">
-      <!-- Header -->
-      <div class="px-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold text-gray-400">Horse Racing Game</h1>
-        <GameControls />
+  <div class="horse-racing-game min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div
+      class="px-2 sm:px-4 py-2 sm:py-3 flex justify-between items-center bg-gray-50 sticky top-0 z-10"
+    >
+      <h1 class="text-lg sm:text-xl font-bold text-gray-400">Horse Racing Game</h1>
+      <GameControls />
+    </div>
+
+    <!-- Game Layout -->
+    <div class="flex flex-col lg:grid lg:grid-cols-12 gap-2 pb-6 px-2 sm:px-4">
+      <!-- Left Column - Controls and Horses -->
+      <div class="space-y-4 lg:col-span-2 order-2 lg:order-1">
+        <!-- Horses List -->
+        <HorsesList :active-tab="activeTab" />
       </div>
 
-      <!-- Game Layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-2 pb-6 px-4">
-        <!-- Left Column - Controls and Horses -->
-        <div class="space-y-4 col-span-2">
-          <!-- Horses List -->
-          <HorsesList :active-tab="activeTab" />
+      <!-- Right Column - Results -->
+      <div class="space-y-6 lg:col-span-10 order-1 lg:order-2">
+        <!-- Rounds Tabs -->
+        <div v-if="gameStore.races.length > 0">
+          <Tabs
+            ref="tabsRef"
+            :tabs="roundTabs"
+            :defaultTab="activeTab"
+            :showStartButton="true"
+            :showResetMenu="true"
+            :canStartGame="canStartRaces"
+            :canGenerateSchedule="canGenerateSchedule"
+            :isRacing="gameStore.gameState === 'racing'"
+            @start-game="handleStartRaces"
+            @new-schedule="handleGenerateSchedule"
+            @reset-all-rounds="handleResetAllRounds"
+          >
+            <template #default="{ activeTab: currentTab }">
+              <RoundTabContent
+                v-for="race in gameStore.races"
+                :key="race.id"
+                v-show="currentTab === race.id"
+                :race="race"
+              />
+              <GameStatistics v-show="currentTab === -1" />
+            </template>
+          </Tabs>
         </div>
 
-        <!-- Right Column - Results -->
-        <div class="space-y-6 col-span-10">
-          <!-- Rounds Tabs -->
-          <div v-if="gameStore.races.length > 0">
-            <Tabs
-              ref="tabsRef"
-              :tabs="roundTabs"
-              :defaultTab="activeTab"
-              :showStartButton="true"
-              :showResetMenu="true"
-              :canStartGame="canStartRaces"
-              :canGenerateSchedule="canGenerateSchedule"
-              :isRacing="gameStore.gameState === 'racing'"
-              @start-game="handleStartRaces"
-              @new-schedule="handleGenerateSchedule"
-              @reset-all-rounds="handleResetAllRounds"
+        <!-- No Races Message -->
+        <BaseCard
+          v-else
+          class="flex flex-col justify-center items-center min-h-[300px] sm:min-h-[400px] space-y-4 sm:space-y-6 py-6 sm:py-8 h-[calc(50vh-2rem)] sm:h-[calc(60vh-3rem)]"
+        >
+          <!-- Schedule Section -->
+          <div
+            class="text-center space-y-3 sm:space-y-4 mb-3 sm:mb-4"
+            :class="{ 'opacity-50': !canGenerateSchedule }"
+          >
+            <!-- Large Calendar Icon -->
+            <div
+              class="text-4xl sm:text-6xl mb-3 sm:mb-4"
+              :class="{ grayscale: !canGenerateSchedule }"
             >
-              <template #default="{ activeTab: currentTab }">
-                <RoundTabContent
-                  v-for="race in gameStore.races"
-                  :key="race.id"
-                  v-show="currentTab === race.id"
-                  :race="race"
-                />
-                <GameStatistics v-show="currentTab === -1" />
-              </template>
-            </Tabs>
+              📅
+            </div>
+
+            <!-- Schedule Text -->
+            <h2
+              class="text-xl sm:text-2xl font-bold mb-2"
+              :class="canGenerateSchedule ? 'text-gray-800' : 'text-gray-400'"
+            >
+              Create Race Schedule
+            </h2>
+            <p
+              class="max-w-md mx-auto text-sm sm:text-base px-4"
+              :class="canGenerateSchedule ? 'text-gray-600' : 'text-gray-400'"
+            >
+              {{
+                canGenerateSchedule
+                  ? 'Generate rounds and start racing!'
+                  : 'Generate horses first to create a schedule'
+              }}
+            </p>
           </div>
 
-          <!-- No Races Message -->
-          <BaseCard
-            v-else
-            class="flex flex-col justify-center items-center min-h-[400px] space-y-6 py-8 h-[calc(100vh-5rem)]"
-          >
-            <!-- Schedule Section -->
-            <div class="text-center space-y-4 mb-4" :class="{ 'opacity-50': !canGenerateSchedule }">
-              <!-- Large Calendar Icon -->
-              <div class="text-6xl mb-4" :class="{ grayscale: !canGenerateSchedule }">📅</div>
-
-              <!-- Schedule Text -->
-              <h2
-                class="text-2xl font-bold mb-2"
-                :class="canGenerateSchedule ? 'text-gray-800' : 'text-gray-400'"
-              >
-                Create Race Schedule
-              </h2>
-              <p
-                class="max-w-md mx-auto"
-                :class="canGenerateSchedule ? 'text-gray-600' : 'text-gray-400'"
-              >
-                {{
-                  canGenerateSchedule
-                    ? 'Generate rounds and start racing!'
-                    : 'Generate horses first to create a schedule'
-                }}
-              </p>
-            </div>
-
-            <!-- Generate Schedule Button -->
-            <div class="w-full flex justify-center">
-              <Button
-                :disabled="!canGenerateSchedule"
-                variant="primary"
-                size="lg"
-                @click="gameStore.generateRaceSchedule()"
-              >
-                Generate Schedule
-              </Button>
-            </div>
-          </BaseCard>
-        </div>
+          <!-- Generate Schedule Button -->
+          <div class="w-full flex justify-center px-4">
+            <Button
+              :disabled="!canGenerateSchedule"
+              variant="primary"
+              size="lg"
+              @click="gameStore.generateRaceSchedule()"
+              class="w-full sm:w-auto"
+            >
+              Generate Schedule
+            </Button>
+          </div>
+        </BaseCard>
       </div>
     </div>
   </div>
