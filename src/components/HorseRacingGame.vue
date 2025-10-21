@@ -2,9 +2,9 @@
   <div class="horse-racing-game min-h-screen bg-gray-50">
     <!-- Header -->
     <div
-      class="px-2 sm:px-4 py-2 sm:py-3 flex justify-between items-center bg-gray-50 sticky top-0 z-10"
+      class="px-2 sm:px-4 py-1 sm:py-2 flex justify-between items-center bg-gray-50 sticky top-0 sm:static z-10"
     >
-      <h1 class="text-lg sm:text-xl font-bold text-gray-400">Horse Racing Game</h1>
+      <h1 class="text-base sm:text-lg font-bold text-gray-400">Horse Racing Game</h1>
       <GameControls />
     </div>
 
