@@ -33,9 +33,9 @@
     </div>
 
     <!-- Horses List -->
-    <div v-else class="max-h-[calc(100vh-8rem)] overflow-y-auto">
+    <div v-else class="max-h-[calc(100vh-8rem)] overflow-y-auto animate-fade-in">
       <!-- Selected Horses Section -->
-      <div v-if="selectedHorses.length > 0">
+      <div v-if="selectedHorses.length > 0" class="animate-slide-in-left">
         <div
           class="px-2 py-1 bg-blue-100 text-xs font-medium text-blue-700 border-b border-blue-200 flex justify-between"
         >
@@ -47,15 +47,17 @@
           </div>
         </div>
         <HorseCard
-          v-for="horse in selectedHorses"
+          v-for="(horse, index) in selectedHorses"
           :key="horse.id"
           :horse="horse"
           :is-selected="true"
+          :style="{ animationDelay: `${index * 30}ms` }"
+          class="animate-slide-in-left"
         />
       </div>
 
       <!-- Unselected Horses Section -->
-      <div v-if="unselectedHorses.length > 0">
+      <div v-if="unselectedHorses.length > 0" class="animate-slide-in-right">
         <div
           class="px-2 py-1 bg-gray-100 text-xs font-medium text-gray-600 border-b border-gray-200 flex justify-between"
         >
@@ -64,10 +66,12 @@
           <div class="text-right">Condition</div>
         </div>
         <HorseCard
-          v-for="horse in unselectedHorses"
+          v-for="(horse, index) in unselectedHorses"
           :key="horse.id"
           :horse="horse"
           :is-selected="false"
+          :style="{ animationDelay: `${(selectedHorses.length + index) * 30}ms` }"
+          class="animate-slide-in-right"
         />
       </div>
     </div>
@@ -117,3 +121,50 @@ function handleGenerateHorses() {
   }
 }
 </script>
+
+<style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.2s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.2s ease-out forwards;
+  opacity: 0;
+}
+</style>

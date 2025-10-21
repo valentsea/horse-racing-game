@@ -24,7 +24,7 @@
     </div>
 
     <!-- Game Layout -->
-    <div class="flex flex-col lg:grid lg:grid-cols-12 gap-2 pb-6 px-2 sm:px-4">
+    <div class="flex flex-col lg:grid lg:grid-cols-12 gap-2 pb-6 px-2 sm:px-4 overflow-x-none">
       <!-- Left Column - Controls and Horses -->
       <div class="space-y-4 lg:col-span-2 order-2 lg:order-1">
         <!-- Horses List -->
