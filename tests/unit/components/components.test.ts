@@ -219,7 +219,7 @@ describe('GameControls Component', () => {
     expect(mockStore.resetGame).toHaveBeenCalled()
   })
 
-  it('should disable reset button when racing', async () => {
+  it('should keep reset button enabled when racing', async () => {
     mockStore.gameState = 'racing'
 
     wrapper = mount(GameControls, {
@@ -229,7 +229,7 @@ describe('GameControls Component', () => {
     })
 
     const resetButton = wrapper.find('button')
-    expect(resetButton.attributes('disabled')).toBeDefined()
+    expect(resetButton.attributes('disabled')).toBeUndefined()
   })
 
   it('should enable reset button when not racing', async () => {
