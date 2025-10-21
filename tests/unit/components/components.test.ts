@@ -59,7 +59,7 @@ describe('HorsesList Component', () => {
     if (h2Element.exists()) {
       expect(h2Element.text()).toBe('Horses')
     }
-    
+
     const horseCards = wrapper.findAllComponents({ name: 'HorseCard' })
     expect(horseCards).toHaveLength(2)
   })

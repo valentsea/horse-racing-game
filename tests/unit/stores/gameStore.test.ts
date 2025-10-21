@@ -325,7 +325,7 @@ describe('Game Store', () => {
       // After starting all races, the current race index should be at the end
       expect(store.currentRaceIndex).toBe(store.races.length - 1)
       // All races should be completed
-      expect(store.races.every(race => race.state === 'completed')).toBe(true)
+      expect(store.races.every((race) => race.state === 'completed')).toBe(true)
     })
 
     it('should throw error for invalid race ID', async () => {
