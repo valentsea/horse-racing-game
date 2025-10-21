@@ -22,6 +22,7 @@ describe('HorsesList Component', () => {
     mockStore = {
       horses: [],
       generateGameHorses: vi.fn(),
+      resetGame: vi.fn(),
     }
 
     vi.mocked(useGameStore).mockReturnValue(mockStore)
@@ -72,7 +73,8 @@ describe('HorsesList Component', () => {
       },
     })
 
-    const generateButton = wrapper.find('button')
+    // Find the "Generate horses" button specifically (not the "New Game" button)
+    const generateButton = wrapper.find('button:last-child')
     if (generateButton.exists()) {
       await generateButton.trigger('click')
       expect(mockStore.generateGameHorses).toHaveBeenCalledWith(20)
