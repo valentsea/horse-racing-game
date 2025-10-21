@@ -52,6 +52,12 @@ export const useGameStore = defineStore('game', () => {
   /** Flag indicating if any race is currently in progress */
   const isRaceInProgress = ref(false)
 
+  /** Flag indicating if we're in delay period between races */
+  const isInRaceDelay = ref(false)
+
+  /** Countdown timer for race delay */
+  const raceDelayCountdown = ref(0)
+
   // ==================== COMPUTED PROPERTIES ====================
 
   /**
@@ -174,6 +180,27 @@ export const useGameStore = defineStore('game', () => {
   }
 
   /**
+   * Handles the delay between races with countdown
+   */
+  async function delayBetweenRaces() {
+    isInRaceDelay.value = true
+    raceDelayCountdown.value = GAME_CONFIG.raceDelay / 1000 // Convert to seconds
+
+    // Countdown every second
+    const countdownInterval = setInterval(() => {
+      raceDelayCountdown.value--
+    }, 1000)
+
+    // Wait for the full delay
+    await new Promise((resolve) => setTimeout(resolve, GAME_CONFIG.raceDelay))
+
+    // Clean up after delay is complete
+    clearInterval(countdownInterval)
+    isInRaceDelay.value = false
+    raceDelayCountdown.value = 0
+  }
+
+  /**
    * Starts all races sequentially with delays between races
    *
    * Executes all scheduled races one by one, updating the current race index
@@ -200,8 +227,10 @@ export const useGameStore = defineStore('game', () => {
           await runSingleRace(race)
         }
 
-        // Small delay between races for better UX
-        await new Promise((resolve) => setTimeout(resolve, GAME_CONFIG.raceDelay))
+        // Delay between races with countdown (except for the last race)
+        if (i < races.value.length - 1) {
+          await delayBetweenRaces()
+        }
       }
 
       gameState.value = 'completed'
@@ -373,6 +402,8 @@ export const useGameStore = defineStore('game', () => {
     currentRaceIndex,
     raceResults,
     isRaceInProgress,
+    isInRaceDelay,
+    raceDelayCountdown,
 
     // Computed
     isGameReady,

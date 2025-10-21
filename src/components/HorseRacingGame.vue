@@ -2,10 +2,25 @@
   <div class="horse-racing-game min-h-screen bg-gray-50">
     <!-- Header -->
     <div
-      class="px-2 sm:px-4 py-1 sm:py-2 flex justify-between items-center bg-gray-50 sticky top-0 sm:static z-10"
+      class="px-2 sm:px-4 py-0 sm:py-0 flex justify-between items-center bg-gray-50 sticky top-0 sm:static z-10"
     >
-      <h1 class="text-base sm:text-lg font-bold text-gray-400">Horse Racing Game</h1>
+      <h1 class="text-base sm:text-base font-bold text-gray-400">Horse Racing Game</h1>
       <GameControls />
+    </div>
+
+    <!-- Race Delay Notification -->
+    <div
+      v-if="gameStore.isInRaceDelay"
+      class="fixed top-32 left-1/2 transform -translate-x-1/2 z-50 bg-blue-100 border border-blue-200 rounded-lg p-4 shadow-lg animate-slide-down"
+    >
+      <div class="flex items-center space-x-3 text-blue-800">
+        <div
+          class="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"
+        ></div>
+        <span class="text-base font-medium">
+          Next round starting in {{ gameStore.raceDelayCountdown }} seconds...
+        </span>
+      </div>
     </div>
 
     <!-- Game Layout -->
@@ -244,3 +259,20 @@ function handleResetAllRounds() {
   }
 }
 </script>
+
+<style scoped>
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+</style>
