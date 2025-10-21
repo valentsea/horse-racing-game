@@ -37,14 +37,15 @@
         <!-- Start the game button -->
         <button
           v-if="showStartButton"
-          @click="$emit('start-game')"
+          @click="handleStartButtonClick"
           :disabled="!canStartGame || isRacing"
           class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed rounded-md transition-colors flex items-center space-x-1"
         >
           <span v-if="isRacing" class="animate-pulse">🔄</span>
+          <span v-else-if="isGameCompleted">🔄</span>
           <span v-else>🏁</span>
-          <span class="hidden sm:inline">{{ isRacing ? 'Racing...' : 'Start the game' }}</span>
-          <span class="sm:hidden">{{ isRacing ? 'Racing' : 'Start' }}</span>
+          <span class="hidden sm:inline">{{ getButtonText() }}</span>
+          <span class="sm:hidden">{{ getButtonTextShort() }}</span>
         </button>
 
         <!-- Reset All Rounds menu -->
@@ -119,6 +120,7 @@ interface Props {
   canStartGame?: boolean
   canGenerateSchedule?: boolean
   isRacing?: boolean
+  isGameCompleted?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -127,6 +129,7 @@ const props = withDefaults(defineProps<Props>(), {
   canStartGame: false,
   canGenerateSchedule: false,
   isRacing: false,
+  isGameCompleted: false,
 })
 
 const emit = defineEmits<{
@@ -137,6 +140,26 @@ const emit = defineEmits<{
 
 const activeTab = ref(props.defaultTab || props.tabs[0]?.id)
 const showResetDropdown = ref(false)
+
+function handleStartButtonClick() {
+  if (props.isGameCompleted) {
+    emit('reset-all-rounds')
+  } else {
+    emit('start-game')
+  }
+}
+
+function getButtonText(): string {
+  if (props.isRacing) return 'Racing...'
+  if (props.isGameCompleted) return 'Start again with the same horses'
+  return 'Start the game'
+}
+
+function getButtonTextShort(): string {
+  if (props.isRacing) return 'Racing'
+  if (props.isGameCompleted) return 'Start Again'
+  return 'Start'
+}
 
 function selectTab(tabId: string | number) {
   const tab = props.tabs.find((t) => t.id === tabId)

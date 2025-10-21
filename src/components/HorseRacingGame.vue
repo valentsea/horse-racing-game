@@ -33,9 +33,10 @@
             :defaultTab="activeTab"
             :showStartButton="true"
             :showResetMenu="true"
-            :canStartGame="canStartRaces"
+            :canStartGame="canStartRaces || isGameCompleted"
             :canGenerateSchedule="canGenerateSchedule"
             :isRacing="gameStore.gameState === 'racing'"
+            :isGameCompleted="isGameCompleted"
             @start-game="handleStartRaces"
             @new-schedule="handleGenerateSchedule"
             @reset-all-rounds="handleResetAllRounds"
@@ -221,6 +222,10 @@ const canGenerateSchedule = computed(
 )
 
 const canStartRaces = computed(() => gameStore.races.length > 0 && gameStore.gameState === 'idle')
+
+const isGameCompleted = computed(
+  () => gameStore.races.length > 0 && gameStore.races.every((race) => race.state === 'completed'),
+)
 
 function handleGenerateSchedule() {
   try {
